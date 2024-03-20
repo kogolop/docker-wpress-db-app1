@@ -6,7 +6,7 @@ pipeline {
        stage('clone'){
             steps{
 		echo 'Cloning Stage'
-            	git url:'https:				//github.com/kogolop/docker-wpress-db-app1.git' , branch:"main"
+            	git url:'https://github.com/kogolop/docker-wpress-db-app1.git' , branch:"main"
 	    	echo 'Pulled Code Successfully From Github'
 		}	
             
