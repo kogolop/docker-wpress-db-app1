@@ -1,6 +1,6 @@
 pipeline {
     agent {
-	label 'pk-jnk-agent1'
+	label 'pk-jnk-agent-2'
 	}                         // This specifies that the pipeline can run on any available agent
     stages {
        stage('clone'){
