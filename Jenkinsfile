@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'pkagent1'} // This specifies that the pipeline can run on any available agent
+    agent any // This specifies that the pipeline can run on any available agent
 
     stages {
         stage('Build') { // First stage: Build
@@ -17,3 +17,16 @@ pipeline {
             }
         }
     }
+
+    post {
+        always {
+            echo 'This will always run'
+        }
+        success {
+            echo 'Build succeeded!'
+        }
+        failure {
+            echo 'Build failed.'
+        }
+    }
+}
