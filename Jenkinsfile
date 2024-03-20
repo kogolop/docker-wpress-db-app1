@@ -4,9 +4,11 @@ pipeline {
 	}                         // This specifies that the pipeline can run on any available agent
     stages {
        stage('clone'){
-            steps{echo 'Cloning Stage'
-            git url:'https://github.com/kogolop/docker-wpress-db-app1.git' , branch:"main"}
-	    echo 'Pulled Code Successfully From Github'	
+            steps{
+		echo 'Cloning Stage'
+            	git url:'https://github.com/kogolop/docker-wpress-db-app1.git' , branch:"main"
+	    	echo 'Pulled Code Successfully From Github'
+		}	
             
         }   
         stage('Build') { // First stage: Build
