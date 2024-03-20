@@ -1,7 +1,11 @@
 pipeline {
     agent any // This specifies that the pipeline can run on any available agent
-
     stages {
+       stage("clone"){
+            steps{echo "Cloning Stage"
+            git url:"https://github.com/diabloexodia/TODO-APP.git" , branch:"main"}
+            
+        }   
         stage('Build') { // First stage: Build
             steps {
                 echo 'Building...'
