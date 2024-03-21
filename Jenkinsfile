@@ -35,10 +35,11 @@ pipeline {
                 // Commands to test your project would go here
             }
         }
-	stage("deploy") {
+	stage("Deploy") {
     	   steps {
+		   //jenkins deploying using dcoker compose file: stopping and removing old containers to replace with new created containers
         	echo "Deploying the container"
-               	sh "docker-compose down && docker-compose up -d"
+               	sh "docker-compose down && docker-compose up -d"    
     	    }
 	}
 
