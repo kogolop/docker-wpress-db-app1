@@ -35,6 +35,13 @@ pipeline {
                 // Commands to test your project would go here
             }
         }
+	stage("deploy") {
+    	   steps {
+        	echo "Deploying the container"
+               	sh "docker-compose down && docker-compose up -d"
+    	    }
+	}
+
     }
     post {
         always {
