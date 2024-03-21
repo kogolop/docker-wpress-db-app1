@@ -35,11 +35,10 @@ pipeline {
                 // Commands to test your project would go here
             }
         }
-	stage("Deploy") {
+	stage("deploy") {
     	   steps {
-		   //jenkins deploying using dcoker compose file: stopping and removing old containers to replace with new created containers
         	echo "Deploying the container"
-               	sh "docker-compose down && docker-compose up -d"    
+               	sh "docker-compose down && docker-compose up -d"
     	    }
 	}
 
@@ -49,8 +48,9 @@ pipeline {
             echo 'This will always run'
         }
         success {
-            echo 'Build succeeded!'
-	    echo 'Push  succeeded!'
+            echo 'Build Succeeded!'
+	    echo 'Push  Succeeded!'
+	    echo 'Deploy Succeeded!'
         }
         failure {
             echo 'Build failed.'
