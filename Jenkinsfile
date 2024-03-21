@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                echo 'Building...'
+                echo 'Building..'
                 // Ensure there's no leading space before docker command
                 sh 'docker build -t kogolop/docker-wpress-db-app1:latest .'
             }
@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Testing.....'
+                echo 'Testing...'
                 // Commands to test your project would go here
             }
         }
@@ -53,7 +53,7 @@ pipeline {
 	    echo 'Deploy Succeeded!'
         }
         failure {
-            echo 'Build failed...'
+            echo 'Build failed.'
         }
     }
 }
