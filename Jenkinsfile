@@ -15,17 +15,17 @@ pipeline {
             steps {
                 echo 'Building...'
                 // Ensure there's no leading space before docker command
-                sh 'docker build -t docker-wpress-db-app1 .'
+                sh 'docker build -t kogolop/docker-wpress-db-app1:latest .'
             }
         }
         stage("push-to-docker") {
             steps {
                 echo "Pushing image to docker hub"
-                withCredentials([usernamePassword(credentialsId: "9573e038-44e4-4210-84db-be092e0af109", passwordVariable: "dockerhubpass", 			        usernameVariable: "dockerhubuser")])
+                withCredentials([usernamePassword(credentialsId: "9573e038-44e4-4210-84db-be092e0af109", passwordVariable:    		"dockerhubpass", usernameVariable: "dockerhubuser")])
 		{
-                    sh "docker tag docker-wpress-db-app1 ${env.dockerhubuser}/docker-wpress-db-app1:latest"
+                    sh "docker tag docker-wpress-db-app1 kogolop/docker-wpress-db-app1:latest"
                     sh "docker login -u ${env.dockerhubuser} -p ${env.dockerhubpass}"
-                    sh "docker push ${env.dockerhubuser}/docker-wpress-db-app1:latest"
+                    sh "docker push kogolop/docker-wpress-db-app1:latest"
                 }
             }
         }
