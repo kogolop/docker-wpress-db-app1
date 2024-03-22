@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                echo 'Cloning Stage'
+                echo 'Cloning Stage..'
                 // Ensure there's no spacing in the URL
                 git url: 'https://github.com/kogolop/docker-wpress-db-app1.git', branch: "main"
                 echo 'Pulled Code Successfully From Github'
