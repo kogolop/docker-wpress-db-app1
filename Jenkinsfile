@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Test') {
             steps {
-                echo 'Testing...'
+                echo 'Testing...With Sonarqube'
                 // Commands to test your project would go here
             }
         }
