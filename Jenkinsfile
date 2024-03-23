@@ -3,10 +3,11 @@ pipeline {
         label 'pk-jnk-agent-2'  // This specifies the particular agent where there pipe kicks off from
     }
     stages {
-	stage('Clean Workspace'){
+	stage('Cleanup Workspace'){
 	    steps {
 		 CleanWs()         //this function prepare the workspace for check out from SCM github
-	    }
+	     }
+	}
         stage('Clone') {
             steps {
                 echo 'Cloning Stage..'
