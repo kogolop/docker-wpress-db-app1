@@ -5,7 +5,7 @@ pipeline {
     stages {
 	stage('Clean Workspace'){
 	    steps {
-		 CleanWs()        //this function prepare the workspace for check out from SCM github
+		 CleanWs()         //this function prepare the workspace for check out from SCM github
 	    }
         stage('Clone') {
             steps {
