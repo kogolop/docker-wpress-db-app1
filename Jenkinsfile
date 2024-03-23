@@ -7,6 +7,7 @@ pipeline {
             steps {
                 echo 'Cloning Stage..'
                 // Ensure there's no spacing in the URL
+	        CleanWs()        //this function prepare the workspace for check out from SCM github
                 git credentialsId: 'cc60d203-7c05-46b1-9aac-5b3715663691', url: 'https://github.com/kogolop/docker-wpress-db-app1.git', branch: "main"
                 echo 'Pulled Code Successfully From Github'
             }
