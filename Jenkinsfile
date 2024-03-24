@@ -5,12 +5,7 @@ pipeline {
        	maven 'Maven1' // applying maven as my test tool
       } 
       stages {
-	stage('Cleanup Workspace'){
-	    steps {
-		 cleanWs()         //this function prepare the workspace for check out from SCM github
-	     }
-	 }
-        stage('Clone') {
+	stage('Clone') {
             steps {
                 echo 'Cloning Stage..'
                 // Ensure there's no spacing in the URL
@@ -49,6 +44,11 @@ pipeline {
                	sh "docker-compose down && docker-compose up -d"
     	    }
 	}
+	stage('Cleanup Workspace'){
+	    steps {
+		 cleanWs()         //this function prepare the workspace for check out from SCM github
+	     }
+	 }
 
     }
     post {
