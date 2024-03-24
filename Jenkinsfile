@@ -25,12 +25,19 @@ pipeline {
                 echo 'Building..'
                 // Ensure there's no leading space before docker command
                 sh 'docker build -t kogolop/docker-wpress-db-app1:latest .'
-            }
+             } 
+	}
+	stage("Test Application"){
+           steps {
+		 echo 'Testing...'  
+                 sh "mvn test"
+           }
         }
         stage("push-to-docker") {
             steps {
                 echo "Pushing image to docker hub"
-                withCredentials([usernamePassword(credentialsId: "9573e038-44e4-4210-84db-be092e0af109", passwordVariable:    		"dockerhubpass", usernameVariable: "dockerhubuser")])
+                withCredentials([usernamePassword(credentialsId: "9573e038-44e4-4210-84db-be092e0af109", 
+		passwordVariable: "dockerhubpass", usernameVariable: "dockerhubuser")])
 		{
                     sh "docker tag docker-wpress-db-app1 kogolop/docker-wpress-db-app1:latest"
                     sh "docker login -u ${env.dockerhubuser} -p ${env.dockerhubpass}"
@@ -38,13 +45,7 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
-            steps {
-                echo 'Testing...With Sonarqube'
-                // Commands to test your project would go here
-            }
-        }
-	stage("deploy") {
+        stage("deploy") {
     	   steps {
         	echo "Deploying the container"
                	sh "docker-compose down && docker-compose up -d"
