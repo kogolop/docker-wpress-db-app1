@@ -1,6 +1,10 @@
 pipeline {
     agent {
         label 'pk-jnk-agent-2'  // This specifies the particular agent where there pipe kicks off from
+	  tools {
+       		 jdk 'Java17'
+       		 maven 'Maven1' // applying maven as my test tool
+	    }  
     }
     stages {
 	stage('Cleanup Workspace'){
