@@ -16,6 +16,7 @@ pipeline {
             tools {
                 hudson.plugins.sonar.SonarRunnerInstallation('sonarqube-scanner') {
                     // Additional configuration options if needed
+                    installSource.installers.add(new ManuallyInstalledInstaller('sonarqube-scanner'))
                 }
             }
             environment {
