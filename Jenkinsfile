@@ -13,7 +13,7 @@ pipeline {
         }
 
         stage("SonarQube Analysis") {
-            tools {
+        tools {
                 hudson.plugins.sonar.SonarRunnerInstallation('sonarqube-scanner') {
                     // Additional configuration options if needed
                 }
