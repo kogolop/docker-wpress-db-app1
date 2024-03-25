@@ -15,11 +15,10 @@ pipeline {
         stage("SonarQube Analysis") {
             steps {
                 script {
-                    withSonarQubeEnv('pk-sonarqube1') { // Make sure this ID matches your SonarQube server configuration in Jenkins
-                        // Use SonarScanner to perform the analysis
+                    withSonarQubeEnv('pk-sonarqube1') {
+                        // Execute SonarQube scanner without inline comment and line continuation character
                         sh '''
                            sonar-scanner \
-                           -Dsonar.projectKey=my-application \  // You can omit this line if SonarQube is configured to auto-generate the project key
                            -Dsonar.sources=. \
                            -Dsonar.host.url=http://192.0.1.244:9000 \
                            -Dsonar.login=$SONARQUBE_TOKEN
@@ -29,7 +28,6 @@ pipeline {
             }
         }
 
-        // Your additional stages for Docker operations and cleanup...
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker Image...'
