@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                echo 'Cloning Repository...'
+                echo 'Cloning Repository....'
                 git credentialsId: 'cc60d203-7c05-46b1-9aac-5b3715663691',
                     url: 'https://github.com/kogolop/docker-wpress-db-app1.git',
                     branch: "main"
