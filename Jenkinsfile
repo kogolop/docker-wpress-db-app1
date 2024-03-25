@@ -1,78 +1,29 @@
 pipeline {
-    agent { label 'pk-jnk-agent-1' }  // Specifies the Jenkins agent label
+    agent { label 'pk-jnk-agent-1' }
 
     stages {
-        stage('Clone Repository') {
-            steps {
-                echo 'Cloning Repository...'
-                git credentialsId: 'cc60d203-7c05-46b1-9aac-5b3715663691', 
-                    url: 'https://github.com/kogolop/docker-wpress-db-app1.git', 
-                    branch: "main"
-                echo 'Repository Cloned Successfully'
-            }
-        }
+        // Your previous stages...
         
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube Analysis...'
-                withSonarQubeEnv('pk-sonarqube1') { // Correctly referencing the SonarQube installation name
-                    sh """
-                       sonar-scanner \\
-                       -Dsonar.projectKey=myProjectKey \\
-                       -Dsonar.sources=. \\
-                       -Dsonar.host.url=http://192.0.1.244:9000 \\
-                       -Dsonar.login=$SONAR_AUTH_TOKEN
-                    """
+                withSonarQubeEnv('pk-sonarqube1') {
+                    // Ensure your script block uses triple single quotes for multi-line scripts in Groovy
+                    sh '''
+                       sonar-scanner \
+                       -Dsonar.projectKey=my-application \  // Replace 'my-application' with your actual project key
+                       -Dsonar.sources=. \
+                       -Dsonar.host.url=http://192.0.1.244:9000 \
+                       -Dsonar.login=${env.SONARQUBE_TOKEN}
+                    '''
                 }
                 echo 'SonarQube Analysis Completed'
             }
         }
         
-        stage('Build Docker Image') {
-            steps {
-                echo 'Building Docker Image...'
-                sh 'docker build -t kogolop/docker-wpress-db-app1:latest .'
-                echo 'Docker Image Built Successfully'
-            } 
-        }
-        
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                echo "Pushing Docker Image to Docker Hub..."
-                withCredentials([usernamePassword(credentialsId: "9573e038-44e4-4210-84db-be092e0af109", passwordVariable: "dockerhubpass", usernameVariable: "dockerhubuser")]) {
-                    sh """
-                       docker login -u $dockerhubuser -p $dockerhubpass
-                       docker push kogolop/docker-wpress-db-app1:latest
-                       """
-                }
-                echo 'Docker Image Pushed Successfully'
-            }
-        }
-        
-        stage('Deploy with Docker Compose') {
-            steps {
-                echo "Deploying with Docker Compose..."
-                sh 'docker-compose down && docker-compose up -d'
-                echo 'Deployment Completed Successfully'
-            }
-        }
-        
-        stage('Cleanup Workspace') {
-            steps {
-                cleanWs() // Cleans the workspace after the build and deployment are done
-                echo 'Workspace Cleaned'
-            }
-        }
+        // Your subsequent stages...
     }
     post {
-        always {
-            echo 'This section will always execute.'
-        }
-        success {
-            echo 'Build, Push, and Deployment Succeeded!'
-        }
-        failure {
-            echo 'The process failed at some point.'
-        }
+        // Your post-build actions...
     }
 }
