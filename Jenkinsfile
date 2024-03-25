@@ -1,10 +1,10 @@
 pipeline {
     agent { label 'pk-jnk-agent-1' }
 
-    environment {
+    //environment {
         // Reference the SonarQube token stored in Jenkins Credentials
         //SONARQUBE_TOKEN = credentials('jenkins-sonarqube-token')
-    }
+    //}
 
     stages {
         stage('Clone Repository') {
