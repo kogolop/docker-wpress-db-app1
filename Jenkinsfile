@@ -1,13 +1,32 @@
 pipeline {
     agent { label 'pk-jnk-agent-2' }  // Specifies the agent where the pipeline kicks off
+    tools {
+        // Ensure the SonarQube Scanner tool name matches your Jenkins configuration
+        sonarQubeScanner 'SonarQubeScanner'
+    }
     stages {
         stage('Clone Repository') {
             steps {
                 echo 'Cloning Repository...'
-                git credentialsId: 'cc60d203-7c05-46b1-9aac-5b3715663691', 
-                    url: 'https://github.com/kogolop/docker-wpress-db-app1.git', 
+                git credentialsId: 'cc60d203-7c05-46b1-9aac-5b3715663691',
+                    url: 'https://github.com/kogolop/docker-wpress-db-app1.git',
                     branch: "main"
                 echo 'Repository Cloned Successfully'
+            }
+        }
+        // Moved SonarQube Analysis Stage here, before Build Docker Image
+        stage('SonarQube Analysis') {
+            steps {
+                echo 'Running SonarQube Analysis...'
+                withSonarQubeEnv('pk-sonarqube1') { // Use the name you've configured in Jenkins for your SonarQube server
+                    sh """
+                    sonar-scanner \
+                      -Dsonar.projectKey=myProjectKey \
+                      -Dsonar.sources=. \
+                      -Dsonar.host.url=http://192.0.1.244:9000 \
+                      -Dsonar.login=${env.SONAR_AUTH_TOKEN}
+                    """
+                }
             }
         }
         stage('Build Docker Image') {
@@ -16,8 +35,6 @@ pipeline {
                 sh 'docker build -t kogolop/docker-wpress-db-app1:latest .'
             } 
         }
-        // If you have specific test scripts or procedures for your WordPress/MySQL setup,
-        // you can include a testing stage here using Docker or Docker Compose commands.
         stage('Push Docker Image to Docker Hub') {
             steps {
                 echo "Pushing Docker Image to Docker Hub..."
