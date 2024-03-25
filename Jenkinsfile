@@ -15,13 +15,12 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube Analysis...'
-                // Properly utilizing withSonarQubeEnv to inject the SONAR_AUTH_TOKEN
-                withSonarQubeEnv('jenkins-sonarqube-token') {
+                withSonarQubeEnv('pk-sonarqube1') { // Correctly referencing the SonarQube installation name
                     sh """
-                       sonarqube-scanner \
-                       -Dsonar.projectKey=myProjectKey \
-                       -Dsonar.sources=. \
-                       -Dsonar.host.url=http://192.0.1.244:9000 \
+                       sonar-scanner \\
+                       -Dsonar.projectKey=myProjectKey \\
+                       -Dsonar.sources=. \\
+                       -Dsonar.host.url=http://192.0.1.244:9000 \\
                        -Dsonar.login=$SONAR_AUTH_TOKEN
                     """
                 }
