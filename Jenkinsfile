@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'pk-jnk-agent-2' }  // Specifies the Jenkins agent label
+    agent { label 'pk-jnk-agent-1' }  // Specifies the Jenkins agent label
 
     stages {
         stage('Clone Repository') {
