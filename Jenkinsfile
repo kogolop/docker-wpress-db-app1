@@ -12,23 +12,15 @@ pipeline {
             }
         }
 
-        stage("SonarQube Analysis") {
-            environment {
-                scannerHome = 'sonarqube-scanner'
-            }
-            steps {
-                withSonarQubeEnv('pk-sonarqube1') {
-                    withCredentials([string(credentialsId: 'jenkins-sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                        sh """
-                            ${scannerHome}/bin/sonar-scanner \
-                                -Dsonar.projectKey=Docker-WordPress-DB-App1 \
-                                -Dsonar.sources=. \
-                                -Dsonar.login=\${SONAR_TOKEN}
-                        """
-                    }
-                }
-            }
-        }
+        stage("SonarQube Analysis"){
+           steps {
+	           script {
+		        withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token') { 
+                        sh "mvn sonar:sonar"
+		        }
+	           }	
+           }
+       }
 
         stage('Build Docker Image') {
             steps {
