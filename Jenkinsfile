@@ -1,11 +1,6 @@
 pipeline {
     agent { label 'pk-jnk-agent-1' }
 
-    //environment {
-        // Reference the SonarQube token stored in Jenkins Credentials
-        //SONARQUBE_TOKEN = credentials('jenkins-sonarqube-token')
-    //}
-
     stages {
         stage('Clone Repository') {
             steps {
@@ -17,7 +12,24 @@ pipeline {
             }
         }
 
-       
+        stage("SonarQube Analysis") {
+            steps {
+                script {
+                    withSonarQubeEnv('pk-sonarqube1') { // Make sure this ID matches your SonarQube server configuration in Jenkins
+                        // Use SonarScanner to perform the analysis
+                        sh '''
+                           sonar-scanner \
+                           -Dsonar.projectKey=my-application \  // You can omit this line if SonarQube is configured to auto-generate the project key
+                           -Dsonar.sources=. \
+                           -Dsonar.host.url=http://192.0.1.244:9000 \
+                           -Dsonar.login=$SONARQUBE_TOKEN
+                        '''
+                    }
+                }
+            }
+        }
+
+        // Your additional stages for Docker operations and cleanup...
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker Image...'
@@ -29,11 +41,11 @@ pipeline {
         stage('Push Docker Image to Docker Hub') {
             steps {
                 echo "Pushing Docker Image to Docker Hub..."
-                withCredentials([usernamePassword(credentialsId: "9573e038-44e4-4210-84db-be092e0af109", passwordVariable: "DOCKERHUB_PASS", usernameVariable: "DOCKERHUB_USER")]) {
+                withCredentials([usernamePassword(credentialsId: '9573e038-44e4-4210-84db-be092e0af109', passwordVariable: 'DOCKERHUB_PASS', usernameVariable: 'DOCKERHUB_USER')]) {
                     sh '''
                        docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
                        docker push kogolop/docker-wpress-db-app1:latest
-                    '''
+                       '''
                 }
                 echo 'Docker Image Pushed Successfully'
             }
