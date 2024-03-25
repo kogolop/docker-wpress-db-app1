@@ -12,17 +12,22 @@ pipeline {
             }
         }
 
-         stage("SonarQube Analysis") {
+        stage("SonarQube Analysis") {
+            tools {
+                sonarqube 'sonarqube-scanner'
+            }
             environment {
-                scannerHome = tool 'SonarQubeScanner'
+                scannerHome = tool 'sonarqube-scanner'
             }
             steps {
                 withSonarQubeEnv('pk-sonarqube1') {
                     withCredentials([string(credentialsId: 'jenkins-sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                        sh "${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=Docker-WordPress-DB-App1 \
-                            -Dsonar.sources=. \
-                            -Dsonar.login=${SONAR_TOKEN}"
+                        sh """
+                            ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey=Docker-WordPress-DB-App1 \
+                                -Dsonar.sources=. \
+                                -Dsonar.login=\${SONAR_TOKEN}
+                        """
                     }
                 }
             }
@@ -40,10 +45,10 @@ pipeline {
             steps {
                 echo "Pushing Docker Image to Docker Hub..."
                 withCredentials([usernamePassword(credentialsId: '9573e038-44e4-4210-84db-be092e0af109', passwordVariable: 'DOCKERHUB_PASS', usernameVariable: 'DOCKERHUB_USER')]) {
-                    sh '''
-                       docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
-                       docker push kogolop/docker-wpress-db-app1:latest
-                       '''
+                    sh """
+                        docker login -u \$DOCKERHUB_USER -p \$DOCKERHUB_PASS
+                        docker push kogolop/docker-wpress-db-app1:latest
+                    """
                 }
                 echo 'Docker Image Pushed Successfully'
             }
