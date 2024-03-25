@@ -16,7 +16,7 @@ pipeline {
                 echo 'Running SonarQube Analysis...'
                 withSonarQubeEnv('pk-sonarqube1') { // Use the name you've configured in Jenkins for your SonarQube server
                     sh """
-                    sonar-scanner \
+                    sonarqube-scanner \
                       -Dsonar.projectKey=myProjectKey \
                       -Dsonar.sources=. \
                       -Dsonar.host.url=http://192.0.1.244:9000 \
