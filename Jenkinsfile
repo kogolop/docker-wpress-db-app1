@@ -15,14 +15,15 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube Analysis...'
-                withCredentials([string(credentialsId: 'jenkins-sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                    withSonarQubeEnv('pk-sonarqube1') {
+               // withCredentials([string(credentialsId: 'jenkins-sonarqube-token', variable: 'SONAR_TOKEN')]) {
+                 //   withSonarQubeEnv('pk-sonarqube1') 
+                      withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token'){
                         sh """
                            sonarqube-scanner \
                            -Dsonar.projectKey=myProjectKey \
                            -Dsonar.sources=. \
                            -Dsonar.host.url=http://192.0.1.244:9000 \
-                           -Dsonar.login=$SONAR_TOKEN
+                   //        -Dsonar.login=$SONAR_TOKEN
                             """
                     }
                 }
