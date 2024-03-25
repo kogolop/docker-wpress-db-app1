@@ -15,7 +15,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube Analysis...'
-                    withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token'){
+                withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token'){
                         sh """
                            sonarqube-scanner \
                            -Dsonar.projectKey=myProjectKey \
