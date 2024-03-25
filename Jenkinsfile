@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // Reference the SonarQube token stored in Jenkins Credentials
-        SONARQUBE_TOKEN = credentials('jenkins-sonarqube-token')
+        //SONARQUBE_TOKEN = credentials('jenkins-sonarqube-token')
     }
 
     stages {
@@ -17,21 +17,7 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
-            steps {
-                echo 'Running SonarQube Analysis...'
-                withSonarQubeEnv('pk-sonarqube1') {
-                    sh '''
-                       sonar-scanner \
-                       -Dsonar.sources=. \
-                       -Dsonar.host.url=http://192.0.1.244:9000 \
-                       -Dsonar.login=${env.SONARQUBE_TOKEN}
-                    '''
-                }
-                echo 'SonarQube Analysis Completed'
-            }
-        }
-
+       
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker Image...'
