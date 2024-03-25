@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'pk-jnk-agent-2' }  // Specifies the agent where the pipeline kicks off
+    agent { label 'pk-jnk-agent-1' }  // Specifies the agent where the pipeline kicks off
     stages {
         stage('Clone Repository') {
             steps {
