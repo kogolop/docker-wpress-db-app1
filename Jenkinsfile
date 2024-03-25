@@ -15,19 +15,19 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube Analysis...'
-                withSonarQubeEnv(credentialsId: 'jenkins-sonarqube-token'){
-                        sh """
-                           sonarqube-scanner \
-                           -Dsonar.projectKey=myProjectKey \
-                           -Dsonar.sources=. \
-                           -Dsonar.host.url=http://192.0.1.244:9000 \
-                   //        -Dsonar.login=$SONAR_TOKEN
-                            """
-                    }
+                // Properly utilizing withSonarQubeEnv to inject the SONAR_AUTH_TOKEN
+                withSonarQubeEnv('jenkins-sonarqube-token') {
+                    sh """
+                       sonarqube-scanner \
+                       -Dsonar.projectKey=myProjectKey \
+                       -Dsonar.sources=. \
+                       -Dsonar.host.url=http://192.0.1.244:9000 \
+                       -Dsonar.login=$SONAR_AUTH_TOKEN
+                    """
                 }
                 echo 'SonarQube Analysis Completed'
             }
-        
+        }
         
         stage('Build Docker Image') {
             steps {
