@@ -12,17 +12,17 @@ pipeline {
             }
         }
 
-        stage("SonarQube Analysis") {
+         stage("SonarQube Analysis") {
+            environment {
+                scannerHome = tool 'SonarQubeScanner'
+            }
             steps {
-                script {
-                    withSonarQubeEnv('pk-sonarqube1') {
-                        // Execute SonarQube scanner without inline comment and line continuation character
-                        sh '''
-                           sonar-scanner \
-                           -Dsonar.sources=. \
-                           -Dsonar.host.url=http://192.0.1.244:9000 \
-                           -Dsonar.login=$SONARQUBE_TOKEN
-                        '''
+                withSonarQubeEnv('pk-sonarqube1') {
+                    withCredentials([string(credentialsId: 'jenkins-sonarqube-token', variable: 'SONAR_TOKEN')]) {
+                        sh "${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=Docker-WordPress-DB-App1 \
+                            -Dsonar.sources=. \
+                            -Dsonar.login=${SONAR_TOKEN}"
                     }
                 }
             }
