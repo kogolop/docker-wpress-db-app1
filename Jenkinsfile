@@ -13,12 +13,6 @@ pipeline {
         }
 
         stage("SonarQube Analysis") {
-            tools {
-                hudson.plugins.sonar.SonarRunnerInstallation('sonarqube-scanner') {
-                    // Additional configuration options if needed
-                    installSource.installers.add(new ManuallyInstalledInstaller('sonarqube-scanner'))
-                }
-            }
             environment {
                 scannerHome = tool 'sonarqube-scanner'
             }
