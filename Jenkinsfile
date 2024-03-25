@@ -2,8 +2,7 @@ pipeline {
     agent { label 'pk-jnk-agent-2' }  // Specifies the agent where the pipeline kicks off
     tools {
         // Ensure the SonarQube Scanner tool name matches your Jenkins configuration
-        sonarQubeScanner 'SonarQubeScanner'
-    }
+            }
     stages {
         stage('Clone Repository') {
             steps {
